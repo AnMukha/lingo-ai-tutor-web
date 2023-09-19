@@ -1,0 +1,40 @@
+.container {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.topBar {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+}
+
+.canvasContainer {
+    flex-grow: 1;
+    position: relative;
+}
+
+.canvas {
+    background-color: black;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.topBar button {
+    background-color: #808080; /* gray background */
+    color: #FFFFFF; /* white text */
+    padding: 10px 15px; /* padding around the text */
+    border: none; /* remove default border */
+    border-radius: 5px; /* rounded corners */
+    cursor: pointer; /* pointer cursor on hover */
+    transition: background-color 0.3s; /* smooth transition for hover effect */
+}
+
+.topBar button:hover {
+    background-color: #666666; /* slightly darker gray on hover */
+}
