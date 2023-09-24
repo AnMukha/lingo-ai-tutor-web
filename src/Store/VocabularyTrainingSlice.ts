@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
+import { RootState } from "./store";
 
 interface Exercise {
     word: string,
@@ -37,9 +38,12 @@ export interface WordTranslateFeedback {
     return response.data;
   });
 
-  export const fetchFeedback = createAsyncThunk('vocabularyTraining/fetchSubmit', async (phrase: string) => {
-    const response = await axios.post<WordTranslateFeedback>('https://localhost:7168/api/voc-train-submit',{ text: phrase });
-    response.data.answer = phrase;
+  export const fetchFeedback = createAsyncThunk('vocabularyTraining/fetchSubmit', async (answer: string, {getState}) => {
+    const { vocabularyTraining } = getState() as RootState;
+    const exerciseText = vocabularyTraining.exercises[vocabularyTraining.exercises.length-1].nativePhrase;
+    const response = await axios.post<WordTranslateFeedback>('https://localhost:7168/api/voc-train-submit',
+        { exerciseText: exerciseText, answerText: answer });
+    response.data.answer = answer;
     return response.data;
   });
 

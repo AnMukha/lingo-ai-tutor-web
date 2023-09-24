@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate  } from 'react-router-dom';
 import './VocabularyOverview.css';
 import { useDispatch, useSelector } from 'react-redux';
@@ -6,6 +6,8 @@ import { AppDispatch, RootState } from '../../Store/store';
 import { WordPoint, fetchWordMapPoints } from '../../Store/VocabularyMapSlice';
 
 const VocabularyOverview = () => {
+    
+    const [selectedWord, setSelectedWord] = useState<WordPoint | null>(null);
 
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
     const dispatch = useDispatch<AppDispatch>();
@@ -37,30 +39,65 @@ const VocabularyOverview = () => {
   
               ctx.clearRect(0, 0, canvas.width, canvas.height);
       
-              const xSpace = 30;
-              const ySpace = 50;
+              const xSpace = 0; //30;
+              const ySpace = 0; //50;
   
               const xScale = canvas.width / (1920 + xSpace);
               const yScale = canvas.height / (1080 + ySpace);
                       
-              ctx.setTransform(xScale, 0, 0, yScale, 0, 0);
+              //ctx.setTransform(xScale, 0, 0, yScale, 0, 0);
   
             points.forEach(point => {
               ctx.beginPath();
               ctx.arc(xSpace/2 + point.x, ySpace/2 + point.y, 2, 0, 2 * Math.PI, false);
-              ctx.fillStyle = "silver";
+              if (point.progress == 0 )
+              {
+                ctx.fillStyle = "silver";
+              }
+              else if (point.progress < 3 )
+              {
+                ctx.fillStyle = "red";
+              }
+              else
+                ctx.fillStyle = "green";
+
               ctx.fill();
             });
           }
         }
   
     }
-  
+
+    const Tooltip: React.FC<WordPoint> = ({ x, y, wrd }) => {
+        const style: React.CSSProperties = {
+          position: 'absolute',
+          top: y,
+          left: x,
+          backgroundColor: 'white',
+          border: '1px solid black',
+          padding: '5px',
+          zIndex: 10, 
+          pointerEvents: 'none' 
+        };
+        return <div style={style}>{wrd}</div>;
+      };  
+      
     const navigate = useNavigate();
 
     const onHomeClick = () => {
         navigate('/');
-    };
+    };    
+
+    const handleMouseMove = (e: React.MouseEvent<HTMLCanvasElement> ) => {
+        const canvas = e.target as HTMLCanvasElement;
+        const rect = canvas.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+    
+        const word = points.find(p => Math.sqrt((x-p.x)*(x-p.x) + (y-p.y)*(y-p.y))<=3);
+        if (word) setSelectedWord(word);                    
+        else setSelectedWord(null);
+      };
 
     return (
         <div className="container">
@@ -70,8 +107,9 @@ const VocabularyOverview = () => {
                 </button>
             </div>
             <div className="canvasContainer">
-                <canvas ref={canvasRef} className="canvas"></canvas>
+                <canvas ref={canvasRef} className="canvas" onMouseMove={handleMouseMove}></canvas>
             </div>
+            {selectedWord && <Tooltip wrd={selectedWord.wrd} x={selectedWord.x} y={selectedWord.y} progress={selectedWord.progress}/>}
         </div>
     );
 }
