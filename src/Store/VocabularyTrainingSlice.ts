@@ -8,7 +8,8 @@ interface Exercise {
     originalPhrase: string;    
     answer?: string;
     fixedPhrase?: string;
-    feedback?: string;    
+    feedback?: string;
+    strategy: NextWordStrategyEnum;
 }
 
 export interface VocTrainingState {
@@ -21,10 +22,16 @@ const initialState: VocTrainingState = {
     loading: false
 };
 
+interface NextWordStrategyEnum {
+  [key: number]: string;
+}
+
 export interface WordTranslateExercise {
     word: string,
     nativePhrase: string;
     originalPhrase: string;
+    number: number;
+    strategy: NextWordStrategyEnum
   }
 
 export interface WordTranslateFeedback {
@@ -40,9 +47,14 @@ export interface WordTranslateFeedback {
 
   export const fetchFeedback = createAsyncThunk('vocabularyTraining/fetchSubmit', async (answer: string, {getState}) => {
     const { vocabularyTraining } = getState() as RootState;
-    const exerciseText = vocabularyTraining.exercises[vocabularyTraining.exercises.length-1].nativePhrase;
+    const currentExercise = vocabularyTraining.exercises[vocabularyTraining.exercises.length-1];
     const response = await axios.post<WordTranslateFeedback>('https://localhost:7168/api/voc-train-submit',
-        { exerciseText: exerciseText, answerText: answer });
+        { 
+          exerciseText: currentExercise.nativePhrase, 
+          answerText: answer, 
+          word: currentExercise.word, 
+          strategy: currentExercise.strategy
+        });
     response.data.answer = answer;
     return response.data;
   });
@@ -61,8 +73,9 @@ const vocabularyTrainingSlice = createSlice({
             state.exercises.push({
                 word: action.payload.word, 
                 originalPhrase: action.payload.originalPhrase,
-                nativePhrase: action.payload.nativePhrase
-            }); 
+                nativePhrase: action.payload.nativePhrase,
+                strategy: action.payload.strategy
+            });
           })
 
           .addCase(fetchFeedback.pending, (state) => {
