@@ -1,26 +1,34 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
 import Navbar from './Components/Navbar/Navbar';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import VocabularyTraining from './Components/VocabularyTraining/VocabularyTraining';
 import VocabularyOverview from './Components/VocabularyOverview/VocabularyOverview';
+import Login from './Components/Login/Login';
+import { AuthState } from './Store/GeneralSlice';
+import { useSelector } from 'react-redux';
+import { RootState } from './Store/store';
+import axios from 'axios';
 
 const App: React.FC = () => {
 
-  const [isSignedIn] = useState(true);
+  const authState: AuthState = useSelector((state: RootState) => state.signInState);
 
-  const handleSignIn = () => {        
-  };
-
-  const handleSignOut = () => {
-  };
+  useEffect(() => {
+    const token = localStorage.getItem('authToken');
+    if (token) {
+        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    }
+}, []);
 
   return (
-    <BrowserRouter>
+    <BrowserRouter>   
+      {authState.signedIn? 
+      (      
       <Routes>
         <Route path="/" element=
         {
-          <Navbar isSignedIn={isSignedIn} onSignIn={handleSignIn} onSignOut={handleSignOut} />
+          <Navbar/>
         }/>
         <Route path="vocabulary-train" element=
         {
@@ -30,8 +38,24 @@ const App: React.FC = () => {
         {
           <VocabularyOverview/>
         }/>
-
+        <Route path="login" element=
+        {
+          <Login/>
+        }/>
       </Routes>
+):
+<Routes>  
+<Route path="/" element=
+        {
+          <Navbar/>
+        }/>        
+    <Route path="*" element=
+        {
+          <Login/>
+        }/>        
+    
+</Routes>
+}
     </BrowserRouter>
   );
 }

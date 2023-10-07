@@ -1,11 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit';
 import vocabularyMapReducer from './VocabularyMapSlice';
 import vocabularyTrainingReducer from './VocabularyTrainingSlice';
+import generalStateReducer from './GeneralSlice';
 
 export const store = configureStore({
   reducer: {
     wordPoints: vocabularyMapReducer,
-    vocabularyTraining: vocabularyTrainingReducer
+    vocabularyTraining: vocabularyTrainingReducer, 
+    signInState: generalStateReducer
   },
 });
 

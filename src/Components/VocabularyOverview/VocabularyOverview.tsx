@@ -50,16 +50,20 @@ const VocabularyOverview = () => {
             points.forEach(point => {
               ctx.beginPath();
               ctx.arc(xSpace/2 + point.x, ySpace/2 + point.y, 2, 0, 2 * Math.PI, false);
-              if (point.progress == 0 )
+              if (point.correctUses + point.nonUses == 0 )
               {
-                ctx.fillStyle = "silver";
+                ctx.fillStyle = "darkgray";
               }
-              else if (point.progress < 3 )
+              else if (point.correctUses == 0 && point.nonUses != 0)
               {
                 ctx.fillStyle = "red";
               }
-              else
+              else if (point.correctUses > point.nonUses)
+              {
                 ctx.fillStyle = "green";
+              }
+              else
+                ctx.fillStyle = "orange";
 
               ctx.fill();
             });
@@ -68,7 +72,7 @@ const VocabularyOverview = () => {
   
     }
 
-    const Tooltip: React.FC<WordPoint> = ({ x, y, wrd }) => {
+    const Tooltip: React.FC<WordPoint> = ({ x, y, wrd, correctUses, nonUses }) => {
         const style: React.CSSProperties = {
           position: 'absolute',
           top: y,
@@ -79,7 +83,13 @@ const VocabularyOverview = () => {
           zIndex: 10, 
           pointerEvents: 'none' 
         };
-        return <div style={style}>{wrd}</div>;
+        return (
+          <div style={style}>
+            <p>Word: {wrd}</p>
+            <p>Used correctly: {correctUses}</p> 
+            <p>Not used: {nonUses}</p> 
+          </div>
+          );
       };  
       
     const navigate = useNavigate();
@@ -109,7 +119,7 @@ const VocabularyOverview = () => {
             <div className="canvasContainer">
                 <canvas ref={canvasRef} className="canvas" onMouseMove={handleMouseMove}></canvas>
             </div>
-            {selectedWord && <Tooltip wrd={selectedWord.wrd} x={selectedWord.x} y={selectedWord.y} progress={selectedWord.progress}/>}
+            {selectedWord && <Tooltip wrd={selectedWord.wrd} x={selectedWord.x} y={selectedWord.y} correctUses={selectedWord?.correctUses} nonUses={selectedWord?.nonUses}/>}
         </div>
     );
 }

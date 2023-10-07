@@ -5,7 +5,8 @@ export interface WordPoint {
   wrd: string,
   x: number;
   y: number;
-  progress: number;
+  correctUses: number;
+  nonUses: number;
 }
 
 interface PointsState {
