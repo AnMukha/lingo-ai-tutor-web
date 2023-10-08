@@ -22,7 +22,7 @@ const initialState: PointsState = {
 };
 
 export const fetchWordMapPoints = createAsyncThunk('wordOverview/fetchWordMapPoints', async () => {
-  const response = await axios.get<WordPoint[]>('https://localhost:7168/api/voc-map');
+  const response = await axios.get<WordPoint[]>('/api/voc-map');
   return response.data;
 });
 

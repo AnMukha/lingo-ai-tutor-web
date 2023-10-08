@@ -14,7 +14,7 @@ const App: React.FC = () => {
 
   const authState: AuthState = useSelector((state: RootState) => state.signInState);
 
-  useEffect(() => {
+  useEffect(() => {    
     const token = localStorage.getItem('authToken');
     if (token) {
         axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;

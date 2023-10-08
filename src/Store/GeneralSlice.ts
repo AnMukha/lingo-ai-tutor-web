@@ -27,7 +27,7 @@ const initialState: AuthState = {
 };
 
 export const fetchAuthToken = createAsyncThunk<TokenResponse, LoginData>('general/login', async ({userName, password}) => {
-    const response = await axios.post<TokenResponse>('https://localhost:7168/api/login', {userName, password});
+    const response = await axios.post<TokenResponse>('/api/login', {userName, password});
     const token = response.data.token;
     if (token) {
         localStorage.setItem('authToken', token);

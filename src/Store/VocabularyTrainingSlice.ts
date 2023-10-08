@@ -41,14 +41,14 @@ export interface WordTranslateFeedback {
 }
 
   export const fetchNextExercise = createAsyncThunk('vocabularyTraining/fetchNextExercise', async () => {
-    const response = await axios.get<WordTranslateExercise>('https://localhost:7168/api/voc-train-next');
+    const response = await axios.get<WordTranslateExercise>('/api/voc-train-next');
     return response.data;
   });
 
   export const fetchFeedback = createAsyncThunk('vocabularyTraining/fetchSubmit', async (answer: string, {getState}) => {
     const { vocabularyTraining } = getState() as RootState;
     const currentExercise = vocabularyTraining.exercises[vocabularyTraining.exercises.length-1];
-    const response = await axios.post<WordTranslateFeedback>('https://localhost:7168/api/voc-train-submit',
+    const response = await axios.post<WordTranslateFeedback>('/api/voc-train-submit',
         { 
           exerciseText: currentExercise.nativePhrase, 
           answerText: answer, 
