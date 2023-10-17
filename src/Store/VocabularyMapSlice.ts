@@ -7,6 +7,7 @@ export interface WordPoint {
   y: number;
   correctUses: number;
   nonUses: number;
+  failed: boolean;
 }
 
 interface PointsState {

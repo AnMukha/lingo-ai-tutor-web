@@ -50,6 +50,7 @@ export interface WordTranslateFeedback {
     const currentExercise = vocabularyTraining.exercises[vocabularyTraining.exercises.length-1];
     const response = await axios.post<WordTranslateFeedback>('/api/voc-train-submit',
         { 
+          originalPhrase: currentExercise.originalPhrase,
           exerciseText: currentExercise.nativePhrase, 
           answerText: answer, 
           word: currentExercise.word, 

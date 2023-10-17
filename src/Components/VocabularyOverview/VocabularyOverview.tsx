@@ -52,18 +52,19 @@ const VocabularyOverview = () => {
               ctx.arc(xSpace/2 + point.x, ySpace/2 + point.y, 2, 0, 2 * Math.PI, false);
               if (point.correctUses + point.nonUses == 0 )
               {
-                ctx.fillStyle = "darkgray";
+                ctx.fillStyle = "rgb(40, 40, 40)";
               }
               else if (point.correctUses == 0 && point.nonUses != 0)
               {
-                ctx.fillStyle = "red";
+                ctx.fillStyle = "rgb(130, 50, 80)";
               }
               else if (point.correctUses > point.nonUses)
               {
                 ctx.fillStyle = "green";
               }
               else
-                ctx.fillStyle = "orange";
+              ctx.fillStyle = "orange";
+              if (point.failed) ctx.fillStyle = "red";
 
               ctx.fill();
             });
@@ -72,7 +73,7 @@ const VocabularyOverview = () => {
   
     }
 
-    const Tooltip: React.FC<WordPoint> = ({ x, y, wrd, correctUses, nonUses }) => {
+    const Tooltip: React.FC<WordPoint> = ({ x, y, wrd, correctUses, nonUses, failed }) => {
         const style: React.CSSProperties = {
           position: 'absolute',
           top: y,
@@ -119,7 +120,7 @@ const VocabularyOverview = () => {
             <div className="canvasContainer">
                 <canvas ref={canvasRef} className="canvas" onMouseMove={handleMouseMove}></canvas>
             </div>
-            {selectedWord && <Tooltip wrd={selectedWord.wrd} x={selectedWord.x} y={selectedWord.y} correctUses={selectedWord?.correctUses} nonUses={selectedWord?.nonUses}/>}
+            {selectedWord && <Tooltip wrd={selectedWord.wrd} x={selectedWord.x} y={selectedWord.y} correctUses={selectedWord?.correctUses} nonUses={selectedWord?.nonUses} failed={selectedWord?.failed} />}
         </div>
     );
 }
