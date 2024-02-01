@@ -35,7 +35,9 @@ const Navbar: React.FC = () => {
                 <li>
                   <Link to="/vocabulary-train" className="nav-item">Vocabulary</Link>
                 </li>
-                <li>Grammar</li>
+                <li>
+                  <Link to="/chat" className="nav-item">Chat</Link>
+                </li>
               </ul>
             </li>
             <li>

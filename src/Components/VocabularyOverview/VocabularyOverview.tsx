@@ -5,9 +5,18 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../Store/store';
 import { WordPoint, fetchWordMapPoints } from '../../Store/VocabularyMapSlice';
 
+interface SummaryInfo
+{
+  wordCount: number,
+  usedCorrectlyCount: number,
+  usedCount: number
+}
+
 const VocabularyOverview = () => {
     
-    const [selectedWord, setSelectedWord] = useState<WordPoint | null>(null);
+  const [selectedWord, setSelectedWord] = useState<WordPoint | null>(null);
+
+  const [summary, setSummary] = useState<SummaryInfo | null>(null);
 
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
     const dispatch = useDispatch<AppDispatch>();
@@ -22,11 +31,25 @@ const VocabularyOverview = () => {
             paint(points);
         };        
         resizeCanvas();        
-        window.addEventListener('resize', resizeCanvas);        
+        window.addEventListener('resize', resizeCanvas);
+        recalculateSummary(points);
         return () => {
             window.removeEventListener('resize', resizeCanvas);
         }
     }, [points]);
+
+    const recalculateSummary = (points: WordPoint[]) =>
+    {      
+      const summary: SummaryInfo = { wordCount: points.length, usedCount: 0, usedCorrectlyCount:0 };
+      points.forEach(point => {
+        if (point.correctUses > point.nonUses) {
+          summary.usedCorrectlyCount++;
+          summary.usedCount++;
+        }
+        else if (point.correctUses > 0) summary.usedCount++;    
+      });
+      setSummary(summary);
+    }
 
     const paint = (points: WordPoint[]) =>
     {
@@ -116,6 +139,12 @@ const VocabularyOverview = () => {
                 <button onClick={onHomeClick}>
                     Home
                 </button>
+                <span className="summaryLabel">All:</span>
+                <span className="summaryValue">{summary?.wordCount}</span>
+                <span className="summaryLabel">Used:</span>
+                <span className="summaryValue">{summary?.usedCount}</span>
+                <span className="summaryLabel">Correctly used:</span>
+                <span className="summaryValue">{summary?.usedCorrectlyCount}</span>
             </div>
             <div className="canvasContainer">
                 <canvas ref={canvasRef} className="canvas" onMouseMove={handleMouseMove}></canvas>

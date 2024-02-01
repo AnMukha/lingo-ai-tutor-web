@@ -9,6 +9,7 @@ import { AuthState } from './Store/GeneralSlice';
 import { useSelector } from 'react-redux';
 import { RootState } from './Store/store';
 import axios from 'axios';
+import ChatPage from './Components/ChatPage/ChatPage';
 
 const App: React.FC = () => {
 
@@ -38,6 +39,10 @@ const App: React.FC = () => {
         {
           <VocabularyOverview/>
         }/>
+        <Route path="chat" element=
+        {
+          <ChatPage/>
+        }/>        
         <Route path="login" element=
         {
           <Login/>

@@ -1,0 +1,41 @@
+
+.chat-list-area {
+    background-color: aqua;
+}
+
+.add-chat-button {    
+    margin-left: 10px;
+    background-color: #ffffff;
+    color: black;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    border-color: silver;
+    border-width: 1px;
+}
+
+.chat-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.chat-item, .chat-item-selected {
+    padding: 10px;
+    margin: 5px;
+    background-color: lightgrey;
+    cursor: pointer;
+    border: 1px solid black;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.chat-item:hover {
+    background-color: grey;
+}
+
+.chat-item-selected {
+    background-color: rgb(74, 74, 74);
+    color: white
+}
+

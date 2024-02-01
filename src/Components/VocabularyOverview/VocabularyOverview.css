@@ -38,3 +38,14 @@
 .topBar button:hover {
     background-color: #666666; /* slightly darker gray on hover */
 }
+
+.summaryLabel {
+    margin-left: 20px;
+    margin-right: 5px;
+}
+
+.summaryValue {
+    margin-left: 5px;
+    margin-right: 10px;
+    font-weight: bold;
+}

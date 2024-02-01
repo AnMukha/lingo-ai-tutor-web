@@ -1,0 +1,29 @@
+
+.chat-page {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    grid-template-rows: 1fr auto;
+    grid-template-areas: 
+        "chats messages"
+        "chats input";
+    height: 100vh;    
+}
+
+.chat-list-area {
+    background-color: blue;   
+    grid-area: chats;
+    overflow-y: auto;
+}
+
+
+.messages-area {
+    background-color:chocolate;
+    grid-area: messages;
+    overflow-y: auto;
+}
+
+.input-area {
+    background-color:cadetblue;
+    grid-area: input;
+}
+

@@ -66,7 +66,7 @@ const vocabularyTrainingSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder
-        .addCase(fetchNextExercise.pending, (state) => {
+          .addCase(fetchNextExercise.pending, (state) => {
             state.loading = true;
           })          
           .addCase(fetchNextExercise.fulfilled, (state, action) => {
